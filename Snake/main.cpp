@@ -1,5 +1,5 @@
 #define FRAME_RATE 150
-#define NUM_FILAS 10
+#define NUM_FILAS 12
 #define NUM_COLUMNAS 20
 #define SIM_LAT '|'
 #define SIM_TOP '-'
@@ -14,29 +14,29 @@ using namespace std; //Permite no utilizar std::
 
 void sacar_mapa() {
 
-	char mapa[NUM_COLUMNAS][NUM_FILAS];
+	char mapa[NUM_FILAS][NUM_COLUMNAS]; 
 	
 
-	for (int i = 0; i < NUM_COLUMNAS; i++) {
-		for (int j = 0; j < NUM_FILAS; j++) {
+	for (int i = 0; i < NUM_FILAS; i++) {
+		for (int j = 0; j <NUM_COLUMNAS; j++) {
 
-			if (j == 0 || j == 10)
+			if (i == 0 || i == NUM_FILAS -1)
+			{
+				mapa[i][j] = SIM_TOP;
+			}
+			else if (j == 0 || j == NUM_COLUMNAS - 1)
 			{
 				mapa[i][j] = SIM_LAT;
 			}
-			if (i > 0 && i < 20 && j > 0 && j < 10)
+			else
 			{
 				mapa[i][j] = ' ';
-			}
-			if (i == 0 || i == 20)
-			{
-				mapa[i][j] = SIM_TOP;
 			}
 		}
 		
 	}
-	for (int i = 0; i < NUM_COLUMNAS; i++) {
-		for (int j = 0; j < NUM_FILAS; j++) {
+	for (int i = 0; i < NUM_FILAS; i++) {
+		for (int j = 0; j < NUM_COLUMNAS; j++) {
 
 			cout << mapa[i][j];       
 
@@ -48,14 +48,15 @@ void sacar_mapa() {
 }
 void main() {
 
-	bool bGameOver = true;
+	bool bGameOver = false;
 
-	sacar_mapa();
+	
 
 	//While game is not over execute game loop
 	while (!bGameOver) {
-
-		std::cout << "a" << std::endl;
+		system("cls");
+		sacar_mapa();
+		
 		//Sleep main thread to control game speed execution
 		std::this_thread::sleep_for(std::chrono::milliseconds(FRAME_RATE));
 	}
