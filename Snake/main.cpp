@@ -134,6 +134,7 @@ void juego() {
 		serpiente_x++;
 	}
 
+	
 
 }
 
