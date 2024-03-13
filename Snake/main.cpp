@@ -2,7 +2,7 @@
 #define NUM_FILAS 12
 #define NUM_COLUMNAS 20
 #define SIM_LAT '|'
-#define SIM_TOP '-'
+#define SIM_TOP '_'
 #define SERP 'X'
 #define FRUTA 'O'
 
@@ -29,7 +29,7 @@ int puntos = 0;
 
 void creacion_mapa() {
 
-
+	cout << "Score: " << puntos << endl;
 
 	char mapa[NUM_FILAS][NUM_COLUMNAS];
 
@@ -55,7 +55,7 @@ void creacion_mapa() {
 			{
 				mapa[i][j] = ' ';
 			}
-			if (!fruta_colocada)
+			while (!fruta_colocada)
 			{
 				int rand_fruta_x = (rand() % NUM_COLUMNAS) - 1;
 				int rand_fruta_y = (rand() % NUM_FILAS) - 1;
@@ -75,7 +75,7 @@ void creacion_mapa() {
 			}
 
 
-			if (i == fruta_y && j == fruta_x && fruta_colocada == true)
+			if (i == fruta_y && j == fruta_x)
 			{
 				mapa[i][j] = FRUTA;
 			}
@@ -150,6 +150,8 @@ void juego() {
 		
 	}
 	
+	puntos = puntos + 1;
+	 
 
 }
 
