@@ -1,4 +1,4 @@
-#define FRAME_RATE 150
+#define FRAME_RATE 100
 #define NUM_FILAS 12
 #define NUM_COLUMNAS 20
 #define SIM_LAT '|'
@@ -22,6 +22,10 @@ int fruta_y = 0;
 int fruta_x = 0;
 
 int dire_serp = 0;
+
+bool bGameOver = false;
+
+int puntos = 0;
 
 void creacion_mapa() {
 
@@ -133,7 +137,18 @@ void juego() {
 	{
 		serpiente_x++;
 	}
-
+	
+	if (serpiente_x == fruta_x && serpiente_y == fruta_y)
+	{
+		fruta_colocada = false;
+		puntos=puntos+15;
+	}
+	if (serpiente_x == 0 || serpiente_y == 0 || serpiente_x == 19 || serpiente_y == 11)
+	{
+		bGameOver = true;
+		cout << "LOST" << " Puntos:"<< puntos << endl;
+		
+	}
 	
 
 }
@@ -141,7 +156,7 @@ void juego() {
 
 void main() {
 
-	bool bGameOver = false;
+	
 
 	//creacion_mapa();
 
