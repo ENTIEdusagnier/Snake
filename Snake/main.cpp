@@ -27,6 +27,13 @@ bool bGameOver = false;
 
 int puntos = 0;
 
+int tamaño = 0;
+
+int cola_x[NUM_FILAS * NUM_COLUMNAS]; // CHAT GPT me ha recomendado hacer unas arrays para almazenar las posiciones
+int cola_y[NUM_FILAS * NUM_COLUMNAS];
+
+int cola_longitud = 0;
+
 void creacion_mapa() {
 
 	cout << "Score: " << puntos << endl;
@@ -53,7 +60,17 @@ void creacion_mapa() {
 
 			else
 			{
-				mapa[i][j] = ' ';
+				bool cola = false;
+				for (int k = 0; k < cola_longitud; k++) {
+					if (i == cola_y[k] && j == cola_x[k]) {
+						// Dibujar segmento de la cola
+						mapa[i][j] = 'x'; 
+						cola = true;
+						
+					}
+				}
+				if (!cola)
+					mapa[i][j] = ' ';
 			}
 			while (!fruta_colocada)
 			{
@@ -78,6 +95,7 @@ void creacion_mapa() {
 			if (i == fruta_y && j == fruta_x)
 			{
 				mapa[i][j] = FRUTA;
+				
 			}
 
 
@@ -123,6 +141,9 @@ void movimiento() {
 
 void juego() {
 
+	int anterior_x = serpiente_x;
+	int anterior_y = serpiente_y;
+
 	if (dire_serp == 1)
 	{
 		serpiente_y--;
@@ -137,18 +158,43 @@ void juego() {
 	{
 		serpiente_x++;
 	}
-	
+	//Si la sepiente coje alguna fruta.
 	if (serpiente_x == fruta_x && serpiente_y == fruta_y)
 	{
+		//Volvemos a poner otra en el tablero
 		fruta_colocada = false;
+		// Y sumamos tamaño y puntos
 		puntos=puntos+15;
+		tamaño++;
 	}
+	//Si la serpiente toca algun borde que se acabe el juego.
 	if (serpiente_x == 0 || serpiente_y == 0 || serpiente_x == 19 || serpiente_y == 11)
 	{
 		bGameOver = true;
 		cout << "LOST" << " Puntos:"<< puntos << endl;
 		
 	}
+	// Aqui verifico si la cabeza ha cocado con alguna parte de la cola.
+	for (int i = 0; i < cola_longitud; i++) {
+		if (serpiente_x == cola_x[i] && serpiente_y == cola_y[i])
+			bGameOver = true;
+	}
+
+	// Si la cola no es cero empezaremos ha hacer la cola.
+	if (cola_longitud > 0) {
+		// Hacemos un bucle para poder mover las posiciones de la array y sacar todas las posiciones donde ha de estar la cola
+		for (int i = cola_longitud - 1; i > 0; i--) {
+			cola_x[i] = cola_x[i - 1];
+			cola_y[i] = cola_y[i - 1];
+		}
+
+		// Coje la ultima posicion
+		cola_x[0] = anterior_x;
+		cola_y[0] = anterior_y;
+	}
+
+	// Actualizamos el tamaño
+	cola_longitud = tamaño;
 	
 	puntos = puntos + 1;
 	 
@@ -171,7 +217,7 @@ void main() {
 		juego();
 
 
-		//Sleep main thread to control game speed execution
+		//Sleep main thread to control game speed executionw
 		std::this_thread::sleep_for(std::chrono::milliseconds(FRAME_RATE));
 	}
 }
