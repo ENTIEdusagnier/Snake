@@ -14,6 +14,7 @@
 //Permite no utilizar std::
 using namespace std; 
 
+//Donde empezara la sepiente
 int serpiente_x = 10;
 int serpiente_y = 6;
 
@@ -29,7 +30,7 @@ bool bGameOver = false;
 int puntos = 0;
 int tamaño = 0;
 
-// CHAT GPT me ha recomendado hacer unas arrays para almazenar las posiciones
+// CHAT GPT me ha recomendado hacer unas arrays para almazenar las posiciones de esta manera a si la serpiente podra ocupar toda la tabla
 int cola_x[NUM_FILAS * NUM_COLUMNAS]; 
 int cola_y[NUM_FILAS * NUM_COLUMNAS];
 
@@ -208,6 +209,7 @@ void juego() {
 	// Actualizamos el tamaño
 	cola_longitud = tamaño;
 	
+	// Añadimos un putno por cada frame
 	puntos = puntos + 1;
 	 
 
