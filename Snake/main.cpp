@@ -11,7 +11,8 @@
 #include <chrono>
 #include "keyboard.h"
 
-using namespace std; //Permite no utilizar std::
+//Permite no utilizar std::
+using namespace std; 
 
 int serpiente_x = 10;
 int serpiente_y = 6;
@@ -26,10 +27,10 @@ int dire_serp = 0;
 bool bGameOver = false;
 
 int puntos = 0;
-
 int tamaño = 0;
 
-int cola_x[NUM_FILAS * NUM_COLUMNAS]; // CHAT GPT me ha recomendado hacer unas arrays para almazenar las posiciones
+// CHAT GPT me ha recomendado hacer unas arrays para almazenar las posiciones
+int cola_x[NUM_FILAS * NUM_COLUMNAS]; 
 int cola_y[NUM_FILAS * NUM_COLUMNAS];
 
 int cola_longitud = 0;
@@ -41,26 +42,30 @@ void creacion_mapa() {
 	char mapa[NUM_FILAS][NUM_COLUMNAS];
 
 
-
+	//Creamos el mapa con todo lo neccesario
 	for (int i = 0; i < NUM_FILAS; i++) {
 		for (int j = 0; j < NUM_COLUMNAS; j++) {
 
 			if (i == 0 || i == NUM_FILAS - 1)
 			{
+				// Sacamos la parte superior
 				mapa[i][j] = SIM_TOP;
 			}
 			else if (j == 0 || j == NUM_COLUMNAS - 1)
 			{
+				//Sacamos el lateral
 				mapa[i][j] = SIM_LAT;
 			}
 			else if (i == serpiente_y && j == serpiente_x)
 			{
+				//Sacamos la serpiente (Cabeza)
 				mapa[i][j] = SERP;
 			}
 
 			else
 			{
 				bool cola = false;
+				//Si tiene cola la añadimos 
 				for (int k = 0; k < cola_longitud; k++) {
 					if (i == cola_y[k] && j == cola_x[k]) {
 						// Dibujar segmento de la cola
@@ -69,19 +74,24 @@ void creacion_mapa() {
 						
 					}
 				}
+				//Si no tiene cola blanco
 				if (!cola)
 					mapa[i][j] = ' ';
 			}
+			//Si fruta no esta colocada sacamos una fruta
 			while (!fruta_colocada)
 			{
+				//Creamos posiciones aleatorias para la furta
 				int rand_fruta_x = (rand() % NUM_COLUMNAS) - 1;
 				int rand_fruta_y = (rand() % NUM_FILAS) - 1;
 
+				//Verificamos que no se ponga en un borde
 				if (rand_fruta_x == 0 || rand_fruta_x == 19 || rand_fruta_y == 0 || rand_fruta_y == 11)
 				{
 					fruta_colocada = false;
 
 				}
+				//Si esta bien la posicion la colocamos
 				else
 				{
 					fruta_colocada = true;
@@ -91,7 +101,7 @@ void creacion_mapa() {
 
 			}
 
-
+			//Colocamos la fruta en el sitio neccesario del mapa
 			if (i == fruta_y && j == fruta_x)
 			{
 				mapa[i][j] = FRUTA;
@@ -104,7 +114,7 @@ void creacion_mapa() {
 
 	}
 
-
+	//Sacamos mapa
 	for (int i = 0; i < NUM_FILAS; i++) {
 		for (int j = 0; j < NUM_COLUMNAS; j++) {
 
@@ -118,20 +128,20 @@ void creacion_mapa() {
 
 
 void movimiento() {
-
-	if (IsWPressed())
+	//Leemos los movimientos del jugador y los pasamos a una variable para que luego en otra funcion este actue. Verificamos que el usuario no invierta la direción de la serpiente
+	if (IsWPressed() && dire_serp != 3)
 	{
 		dire_serp = 1;
 	}
-	if (IsAPressed())
+	if (IsAPressed() && dire_serp != 4)
 	{
 		dire_serp = 2;
 	}
-	if (IsSPressed())
+	if (IsSPressed() && dire_serp != 1)
 	{
 		dire_serp = 3;
 	}
-	if (IsDPressed())
+	if (IsDPressed() && dire_serp != 2)
 	{
 		dire_serp = 4;
 	}
@@ -141,9 +151,11 @@ void movimiento() {
 
 void juego() {
 
+	//Creamos dos variables para guardar la posicion anterior de la serpiente
 	int anterior_x = serpiente_x;
 	int anterior_y = serpiente_y;
 
+	//Depende lo que haya hecho el jugador movemos la serpiente.
 	if (dire_serp == 1)
 	{
 		serpiente_y--;
@@ -205,9 +217,6 @@ void juego() {
 void main() {
 
 	
-
-	//creacion_mapa();
-
 	//While game is not over execute game loop
 	while (!bGameOver) {
 		srand(std::time(NULL));
